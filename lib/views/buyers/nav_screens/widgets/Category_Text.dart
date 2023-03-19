@@ -17,9 +17,11 @@ class Category_Text extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            '\ncategories\n',
+            '\nCategories',
             style: TextStyle(
+              color: Colors.white70,
               fontSize: 20,
+              fontWeight: FontWeight.bold,
             ),
           ),
           Container(
@@ -31,10 +33,27 @@ class Category_Text extends StatelessWidget {
                     scrollDirection: Axis.horizontal,
                     itemCount: _categoryTable.length,
                     itemBuilder: ((context, index) {
-                      return ActionChip(label: Text(_categoryTable[index]));
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ActionChip(
+                            backgroundColor: Colors.black26,
+                            onPressed: () {},
+                            label: Center(
+                              child: Text(
+                                _categoryTable[index],
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 13,
+                                ),
+                              ),
+                            )),
+                      );
                     }),
                   ),
                 ),
+                IconButton(
+                    onPressed: () {}, icon: Icon(Icons.arrow_forward_ios))
               ],
             ),
           ),
