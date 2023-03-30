@@ -3,7 +3,7 @@ import 'package:admin_app/views/screens/side_bar_screen/courses_screen.dart';
 import 'package:admin_app/views/screens/side_bar_screen/dashboard_screen.dart';
 import 'package:admin_app/views/screens/side_bar_screen/quizzes_screen.dart';
 import 'package:admin_app/views/screens/side_bar_screen/setting_screen.dart';
-import 'package:admin_app/views/screens/side_bar_screen/subscription_screen.dart';
+import 'package:admin_app/views/screens/side_bar_screen/Lesson_screen.dart';
 import 'package:admin_app/views/screens/side_bar_screen/users_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_admin_scaffold/admin_scaffold.dart';
@@ -16,7 +16,7 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  Widget _selectedItem = AnnouncementsScreen();
+  Widget _selectedItem = CoursesScreen();
   screenSelector(item) {
     switch (item.route) {
       case DashboardScreen.routeName:
@@ -49,9 +49,9 @@ class _MainScreenState extends State<MainScreen> {
         });
         break;
 
-      case SubscriptionsScreen.routeName:
+      case LessonsScreen.routeName:
         setState(() {
-          _selectedItem = SubscriptionsScreen();
+          _selectedItem = LessonsScreen();
         });
         break;
 
@@ -92,14 +92,14 @@ class _MainScreenState extends State<MainScreen> {
             route: CoursesScreen.routeName,
           ),
           AdminMenuItem(
+            title: 'Lessons',
+            icon: Icons.pages,
+            route: LessonsScreen.routeName,
+          ),
+          AdminMenuItem(
             title: 'Quizzes',
             icon: Icons.question_mark,
             route: QuizzesScreen.routeName,
-          ),
-          AdminMenuItem(
-            title: 'Subscriptions',
-            icon: Icons.add_alert,
-            route: SubscriptionsScreen.routeName,
           ),
           AdminMenuItem(
             title: 'Settings',

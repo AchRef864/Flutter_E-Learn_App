@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class SubscriptionsScreen extends StatelessWidget {
+class LessonsScreen extends StatelessWidget {
   static const String routeName = '\SubscriptionsScreen';
 
   @override
