@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -15,7 +16,7 @@ class _LessonsScreenState extends State<LessonsScreen> {
   TextEditingController _textAreaController = TextEditingController();
   final List<String> coursesNames = [];
   String? SelectedCourse;
-  String _textFieldValue = '';
+  String? _textFieldValue;
   String? _textAreaValue;
 
   uploadToFirebaseStore() async {
