@@ -105,232 +105,218 @@ class _CoursesScreenState extends State<CoursesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scrollbar(
-      isAlwaysShown: true,
-      child: SizedBox(
-        width: MediaQuery.of(context).size.width *
-            2, // <-- set width to a large enough value
-        child: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: Column(
-            children: [
-              Container(
-                alignment: Alignment.topLeft,
-                padding: const EdgeInsets.all(10),
-                child: const Text(
-                  'Courses',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 36,
+    return Column(
+      children: [
+        Container(
+          alignment: Alignment.topLeft,
+          padding: const EdgeInsets.all(10),
+          child: const Text(
+            'Courses',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 36,
+            ),
+          ),
+        ),
+        Divider(
+          color: Colors.white,
+        ),
+        Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(14.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start, // Add this line
+                children: [
+                  Text(
+                    'Title:',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  Container(
+                    height: 50,
+                    width: 200,
+                    child: TextField(
+                      decoration: InputDecoration(
+                        hintText: 'Enter title here',
+                        hintStyle: TextStyle(
+                          color: Colors.black,
+                        ),
+                        border: OutlineInputBorder(),
+                        filled: true,
+                        fillColor: Colors.white,
+                      ),
+                      controller: _textFieldController,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(14.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Type:',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Center(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                      child: DropdownButton<String>(
+                        value: selectedLanguage,
+                        dropdownColor: Colors.black,
+                        items: LanguageTypes.map((item) => DropdownMenuItem(
+                              value: item,
+                              child: Text(
+                                item,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                            )).toList(),
+                        onChanged: (item) =>
+                            setState(() => selectedLanguage = item),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(14.0),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    primary: Colors.white70 // Background color
+                    ),
+                onPressed: () {
+                  pickImage();
+                },
+                child: Container(
+                  height: 140,
+                  width: 200,
+                  decoration: BoxDecoration(
+                    color: Colors.white70,
+                  ),
+                  child: _image != null
+                      ? Image.memory(
+                          _image,
+                          fit: BoxFit.cover,
+                        )
+                      : Center(
+                          child: Text(
+                            'Upload Image',
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(14.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start, // Add this line
+                children: [
+                  Text(
+                    'Introduction:',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  Container(
+                    height: 400,
+                    width: 600,
+                    child: TextField(
+                      maxLines: 50,
+                      decoration: InputDecoration(
+                        hintText: 'Enter title here',
+                        hintStyle: TextStyle(
+                          color: Colors.black,
+                        ),
+                        border: OutlineInputBorder(),
+                        filled: true,
+                        fillColor: Colors.white,
+                      ),
+                      controller: _textAreaController,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(14.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start, // Add this line
+                children: [
+                  Text(
+                    'Author:',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  Container(
+                    height: 50,
+                    width: 200,
+                    child: TextField(
+                      decoration: InputDecoration(
+                        hintText: 'Enter title here',
+                        hintStyle: TextStyle(
+                          color: Colors.black,
+                        ),
+                        border: OutlineInputBorder(),
+                        filled: true,
+                        fillColor: Colors.white,
+                      ),
+                      controller: _authorNameController,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(50.0),
+              child: SizedBox(
+                width: 150,
+                height: 50, // set desired width here
+                child: ElevatedButton(
+                  onPressed: () {
+                    uploadToFirebaseStore();
+                  },
+                  child: Text(
+                    'Add Course',
+                    style: TextStyle(fontSize: 15),
                   ),
                 ),
               ),
-              Divider(
-                color: Colors.white,
-              ),
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(14.0),
-                    child: Column(
-                      crossAxisAlignment:
-                          CrossAxisAlignment.start, // Add this line
-                      children: [
-                        Text(
-                          'Title:',
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        SizedBox(height: 10),
-                        Container(
-                          height: 50,
-                          width: 200,
-                          child: TextField(
-                            decoration: InputDecoration(
-                              hintText: 'Enter title here',
-                              hintStyle: TextStyle(
-                                color: Colors.black,
-                              ),
-                              border: OutlineInputBorder(),
-                              filled: true,
-                              fillColor: Colors.white,
-                            ),
-                            controller: _textFieldController,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(14.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Type:',
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Center(
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(2),
-                            ),
-                            child: DropdownButton<String>(
-                              value: selectedLanguage,
-                              dropdownColor: Colors.black,
-                              items:
-                                  LanguageTypes.map((item) => DropdownMenuItem(
-                                        value: item,
-                                        child: Text(
-                                          item,
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                      )).toList(),
-                              onChanged: (item) =>
-                                  setState(() => selectedLanguage = item),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(14.0),
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          primary: Colors.white70 // Background color
-                          ),
-                      onPressed: () {
-                        pickImage();
-                      },
-                      child: Container(
-                        height: 140,
-                        width: 200,
-                        decoration: BoxDecoration(
-                          color: Colors.white70,
-                        ),
-                        child: _image != null
-                            ? Image.memory(
-                                _image,
-                                fit: BoxFit.cover,
-                              )
-                            : Center(
-                                child: Text(
-                                  'Upload Image',
-                                  style: TextStyle(color: Colors.black),
-                                ),
-                              ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(14.0),
-                    child: Column(
-                      crossAxisAlignment:
-                          CrossAxisAlignment.start, // Add this line
-                      children: [
-                        Text(
-                          'Introduction:',
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        SizedBox(height: 10),
-                        Container(
-                          height: 400,
-                          width: 600,
-                          child: TextField(
-                            maxLines: 50,
-                            decoration: InputDecoration(
-                              hintText: 'Enter title here',
-                              hintStyle: TextStyle(
-                                color: Colors.black,
-                              ),
-                              border: OutlineInputBorder(),
-                              filled: true,
-                              fillColor: Colors.white,
-                            ),
-                            controller: _textAreaController,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(14.0),
-                    child: Column(
-                      crossAxisAlignment:
-                          CrossAxisAlignment.start, // Add this line
-                      children: [
-                        Text(
-                          'Author:',
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        SizedBox(height: 10),
-                        Container(
-                          height: 50,
-                          width: 200,
-                          child: TextField(
-                            decoration: InputDecoration(
-                              hintText: 'Enter title here',
-                              hintStyle: TextStyle(
-                                color: Colors.black,
-                              ),
-                              border: OutlineInputBorder(),
-                              filled: true,
-                              fillColor: Colors.white,
-                            ),
-                            controller: _authorNameController,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(50.0),
-                    child: SizedBox(
-                      width: 150,
-                      height: 50, // set desired width here
-                      child: ElevatedButton(
-                        onPressed: () {
-                          uploadToFirebaseStore();
-                        },
-                        child: Text(
-                          'Add Course',
-                          style: TextStyle(fontSize: 15),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
-      ),
+      ],
     );
   }
 }
