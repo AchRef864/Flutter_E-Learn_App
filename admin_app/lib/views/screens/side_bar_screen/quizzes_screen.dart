@@ -76,7 +76,7 @@ class _QuizzesScreenState extends State<QuizzesScreen> {
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text("Warning"),
-            content: Text("You should pick an image and a title"),
+            content: Text("You fill all data"),
             actions: [
               TextButton(
                 child: Text("OK"),
@@ -99,7 +99,7 @@ class _QuizzesScreenState extends State<QuizzesScreen> {
           alignment: Alignment.topLeft,
           padding: const EdgeInsets.all(10),
           child: const Text(
-            'Courses',
+            'Quizzes',
             style: TextStyle(
               color: Colors.white,
               fontSize: 36,

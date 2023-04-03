@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:quizz/views/buyers/nav_screens/course_screen.dart';
 
 class Category_Text extends StatelessWidget {
   final List<String> _categoryTable = [
-    'Procedural languages',
-    'Object-oriented languages',
-    'Scripting languages',
-    'Web development languages',
-    'Mobile app development languages',
-    'Game development languages'
+    'DeskTop developement',
+    'IOS developement',
+    'Web development',
+    'Android developement',
+    'Game development'
   ];
   @override
   Widget build(BuildContext context) {
@@ -53,10 +53,30 @@ class Category_Text extends StatelessWidget {
                   ),
                 ),
                 IconButton(
-                    onPressed: () {}, icon: Icon(Icons.arrow_forward_ios))
+                  onPressed: () {},
+                  icon: Icon(Icons.arrow_forward_ios),
+                ),
               ],
             ),
           ),
+          Container(
+            alignment: Alignment.bottomRight,
+            child: TextButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CourseScreen()),
+                );
+              },
+              child: Text(
+                'all Courses >>> ',
+                style: TextStyle(
+                  decoration: TextDecoration.underline,
+                  color: Colors.lightBlue,
+                ),
+              ),
+            ),
+          )
         ],
       ),
     );

@@ -88,7 +88,7 @@ class _CoursesScreenState extends State<CoursesScreen> {
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text("Warning"),
-            content: Text("You should pick an image and a title"),
+            content: Text("You fill all data"),
             actions: [
               TextButton(
                 child: Text("OK"),

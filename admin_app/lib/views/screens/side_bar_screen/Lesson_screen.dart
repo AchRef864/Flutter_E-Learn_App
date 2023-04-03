@@ -14,10 +14,12 @@ class _LessonsScreenState extends State<LessonsScreen> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   TextEditingController _textFieldController = TextEditingController();
   TextEditingController _textAreaController = TextEditingController();
+  TextEditingController _codeAreaController = TextEditingController();
   final List<String> coursesNames = [];
   String? SelectedCourse;
   String? _textFieldValue;
   String? _textAreaValue;
+  String? _codeAreaValue;
 
   uploadToFirebaseStore() async {
     EasyLoading.show(status: 'Uploading ...');
@@ -26,6 +28,7 @@ class _LessonsScreenState extends State<LessonsScreen> {
         (SelectedCourse != null)) {
       _textFieldValue = await _textFieldController.text;
       _textAreaValue = await _textAreaController.text;
+      _codeAreaValue = await _codeAreaController.text;
       await _firestore
           .collection("courses")
           .doc(SelectedCourse)
@@ -34,6 +37,7 @@ class _LessonsScreenState extends State<LessonsScreen> {
           .set({
         'title': _textFieldValue,
         'lesson': _textAreaValue,
+        'codeline': _codeAreaValue,
         'date': DateTime.now(),
       }).whenComplete(() {
         EasyLoading.showSuccess('Great Success!');
@@ -50,7 +54,7 @@ class _LessonsScreenState extends State<LessonsScreen> {
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text("Warning"),
-            content: Text("You should pick an image and a title"),
+            content: Text("You fill all data"),
             actions: [
               TextButton(
                 child: Text("OK"),
@@ -73,7 +77,7 @@ class _LessonsScreenState extends State<LessonsScreen> {
           alignment: Alignment.topLeft,
           padding: const EdgeInsets.all(10),
           child: const Text(
-            'Courses',
+            'Lessons',
             style: TextStyle(
               color: Colors.white,
               fontSize: 36,
@@ -181,7 +185,7 @@ class _LessonsScreenState extends State<LessonsScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start, // Add this line
                 children: [
                   Text(
-                    'Introduction:',
+                    'Lesson:',
                     style: TextStyle(
                       fontSize: 18,
                       color: Colors.white,
@@ -195,7 +199,7 @@ class _LessonsScreenState extends State<LessonsScreen> {
                     child: TextField(
                       maxLines: 50,
                       decoration: InputDecoration(
-                        hintText: 'Enter title here',
+                        hintText: 'Write lesson here',
                         hintStyle: TextStyle(
                           color: Colors.black,
                         ),
@@ -204,6 +208,23 @@ class _LessonsScreenState extends State<LessonsScreen> {
                         fillColor: Colors.white,
                       ),
                       controller: _textAreaController,
+                    ),
+                  ),
+                  Container(
+                    height: 100,
+                    width: 600,
+                    child: TextField(
+                      maxLines: 50,
+                      decoration: InputDecoration(
+                        hintText: 'Write code here',
+                        hintStyle: TextStyle(
+                          color: Colors.white,
+                        ),
+                        border: OutlineInputBorder(),
+                        filled: true,
+                        fillColor: Colors.black,
+                      ),
+                      controller: _codeAreaController,
                     ),
                   ),
                 ],

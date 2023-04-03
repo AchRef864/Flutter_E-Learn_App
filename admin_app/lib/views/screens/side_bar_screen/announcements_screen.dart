@@ -64,7 +64,7 @@ class _AnnouncementsScreenState extends State<AnnouncementsScreen> {
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text("Warning"),
-            content: Text("You should pick an image and a title"),
+            content: Text("You fill all data"),
             actions: [
               TextButton(
                 child: Text("OK"),
@@ -162,16 +162,28 @@ class _AnnouncementsScreenState extends State<AnnouncementsScreen> {
                   ),
                 ),
               ),
+            ],
+          ),
+          Row(
+            children: [
               Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ElevatedButton(
+                padding: const EdgeInsets.all(50.0),
+                child: SizedBox(
+                  width: 150,
+                  height: 50, // set desired width here
+                  child: ElevatedButton(
                     onPressed: () {
                       uploadToFirebaseStore();
                     },
-                    child: Text('Save')),
+                    child: Text(
+                      'Add Banner',
+                      style: TextStyle(fontSize: 15),
+                    ),
+                  ),
+                ),
               ),
             ],
-          )
+          ),
         ],
       ),
     );

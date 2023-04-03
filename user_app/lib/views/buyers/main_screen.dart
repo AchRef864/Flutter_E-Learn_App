@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'nav_screens/account_screen.dart';
 import 'nav_screens/course_screen.dart';
 import 'nav_screens/home_screen.dart';
-import 'nav_screens/wishlist_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -14,12 +13,7 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   int _pageIndex = 0;
-  List<Widget> _pages = [
-    HomeScreen(),
-    CourseScreen(),
-    WhishlistScreen(),
-    AccountScreen()
-  ];
+  List<Widget> _pages = [HomeScreen(), CourseScreen(), AccountScreen()];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,11 +42,6 @@ class _MainScreenState extends State<MainScreen> {
             backgroundColor: Color.fromARGB(255, 20, 20, 20),
             icon: Icon(CupertinoIcons.book),
             label: 'COURSES',
-          ),
-          BottomNavigationBarItem(
-            backgroundColor: Color.fromARGB(255, 20, 20, 20),
-            icon: Icon(CupertinoIcons.heart),
-            label: 'WISHLIST',
           ),
           BottomNavigationBarItem(
             backgroundColor: Color.fromARGB(255, 20, 20, 20),
