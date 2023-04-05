@@ -24,7 +24,7 @@ class _CoursesScreenState extends State<CoursesScreen> {
               alignment: Alignment.topLeft,
               padding: const EdgeInsets.all(10),
               child: const Text(
-                'Announcements',
+                'Courses',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 36,

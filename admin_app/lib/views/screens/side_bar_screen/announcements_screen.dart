@@ -24,7 +24,7 @@ class _AnnouncementsScreenState extends State<AnnouncementsScreen> {
               alignment: Alignment.topLeft,
               padding: const EdgeInsets.all(10),
               child: const Text(
-                'Courses',
+                'Announcements',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 36,

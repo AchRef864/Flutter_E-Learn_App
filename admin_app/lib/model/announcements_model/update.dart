@@ -101,8 +101,7 @@ class _updateState extends State<update> {
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text("Warning"),
-            content: Text(
-                "Please select a banner and fill either image or title field"),
+            content: Text("Fill required fields"),
             actions: [
               TextButton(
                 child: Text("OK"),

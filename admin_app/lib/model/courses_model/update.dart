@@ -4,19 +4,19 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
-class create extends StatefulWidget {
+class update extends StatefulWidget {
   static const String routeName = '\CoursesScreen';
 
   @override
-  State<create> createState() => _createState();
+  State<update> createState() => _updateState();
 }
 
-class _createState extends State<create> {
+class _updateState extends State<update> {
   final FirebaseStorage _storage = FirebaseStorage.instance;
   dynamic _image;
   String? fileName;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  TextEditingController _textFieldController = TextEditingController();
+  TextEditingController _newTitleController = TextEditingController();
   TextEditingController _authorNameController = TextEditingController();
   TextEditingController _textAreaController = TextEditingController();
   List<String> LanguageTypes = [
@@ -29,7 +29,27 @@ class _createState extends State<create> {
   String? selectedLanguage;
   String? _textFieldValue;
   String? _authorNameValue;
-  String? _textAreaValue;
+  String? _newTitleValue;
+  String? SelectedCourse;
+  String imageUrl = '';
+
+  getCourseDetails() async {
+    DocumentReference docRef =
+        FirebaseFirestore.instance.collection('courses').doc(SelectedCourse);
+
+    DocumentSnapshot doc = await docRef.get();
+    if (doc.exists) {
+      setState(() {
+        _newTitleController.text =
+            (doc.data() as Map<String, dynamic>)['title'];
+        _authorNameController.text =
+            (doc.data() as Map<String, dynamic>)['author'];
+        _textAreaController.text =
+            (doc.data() as Map<String, dynamic>)['introduction'];
+        selectedLanguage = (doc.data() as Map<String, dynamic>)['language'];
+      });
+    }
+  }
 
   pickImage() async {
     FilePickerResult? result = await FilePicker.platform
@@ -52,33 +72,70 @@ class _createState extends State<create> {
   }
 
   uploadToFirebaseStore() async {
-    EasyLoading.show(status: 'Uploading ...');
-    if ((_image != null) &&
-        (!_textFieldController.text.isEmpty) &&
-        (!_textAreaController.text.isEmpty) &&
-        (!_authorNameController.text.isEmpty) &&
-        (selectedLanguage != null)) {
-      String imageUrl = await _uploadToStorage(_image);
-      _textFieldValue = await _textFieldController.text;
-      _textAreaValue = await _textAreaController.text;
-      _authorNameValue = await _authorNameController.text;
-      await _firestore.collection("courses").doc(_textFieldValue).set({
-        'title': _textFieldValue,
-        'language': selectedLanguage,
-        'introduction': _textAreaValue,
-        'image': imageUrl,
-        'author': _authorNameValue,
-        'date': DateTime.now(),
-      }).whenComplete(() {
-        EasyLoading.showSuccess('Great Success!');
-        setState(() {
-          _image = null;
-          _textFieldController.clear();
-          _textAreaController.clear();
-          _authorNameController.clear();
-          selectedLanguage = null;
+    EasyLoading.show(status: 'Updating ...');
+
+    if ((SelectedCourse != null) &&
+        (_image != null ||
+            !_newTitleController.text.isEmpty ||
+            !_textAreaController.text.isEmpty ||
+            !_authorNameController.text.isEmpty ||
+            selectedLanguage != null)) {
+      if (_image != null) {
+        String imageUrl = await _uploadToStorage(_image);
+        await _firestore.collection("courses").doc(SelectedCourse).update({
+          'image': imageUrl,
+          'date': DateTime.now(),
+        }).whenComplete(() {
+          EasyLoading.showSuccess('Data Updated!');
+          setState(() {
+            _image = null;
+          });
         });
-      });
+      }
+      if (!_newTitleController.text.isEmpty) {
+        await _firestore.collection("courses").doc(SelectedCourse).update({
+          'title': _newTitleController.text,
+          'date': DateTime.now(),
+        }).whenComplete(() {
+          EasyLoading.showSuccess('Data Updated!');
+          setState(() {
+            _newTitleController.clear();
+          });
+        });
+      }
+      if (!_textAreaController.text.isEmpty) {
+        await _firestore.collection("courses").doc(SelectedCourse).update({
+          'introduction': _textAreaController.text,
+          'date': DateTime.now(),
+        }).whenComplete(() {
+          EasyLoading.showSuccess('Data Updated!');
+          setState(() {
+            _textAreaController.clear();
+          });
+        });
+      }
+      if (!_authorNameController.text.isEmpty) {
+        await _firestore.collection("courses").doc(SelectedCourse).update({
+          'author': _authorNameController.text,
+          'date': DateTime.now(),
+        }).whenComplete(() {
+          EasyLoading.showSuccess('Data Updated!');
+          setState(() {
+            _authorNameController.clear();
+          });
+        });
+      }
+      if (selectedLanguage != null) {
+        await _firestore.collection("courses").doc(SelectedCourse).update({
+          'language': selectedLanguage,
+          'date': DateTime.now(),
+        }).whenComplete(() {
+          EasyLoading.showSuccess('Data Updated!');
+          setState(() {
+            _authorNameController.clear();
+          });
+        });
+      }
     } else {
       EasyLoading.showError('Failed with Error');
       showDialog(
@@ -86,7 +143,7 @@ class _createState extends State<create> {
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text("Warning"),
-            content: Text("You fill all data"),
+            content: Text("Fill required fields"),
             actions: [
               TextButton(
                 child: Text("OK"),
@@ -122,21 +179,44 @@ class _createState extends State<create> {
                       ),
                     ),
                     SizedBox(height: 10),
-                    Container(
-                      height: 50,
-                      width: 200,
-                      child: TextField(
-                        decoration: InputDecoration(
-                          hintText: 'Enter title here',
-                          hintStyle: TextStyle(
-                            color: Colors.black,
-                          ),
-                          border: OutlineInputBorder(),
-                          filled: true,
-                          fillColor: Colors.white,
-                        ),
-                        controller: _textFieldController,
-                      ),
+                    StreamBuilder<QuerySnapshot>(
+                      stream: FirebaseFirestore.instance
+                          .collection('courses')
+                          .snapshots(),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<QuerySnapshot> snapshot) {
+                        if (!snapshot.hasData) {
+                          return DropdownButton<String>(
+                            items: [],
+                            onChanged: null,
+                          );
+                        }
+                        List<String> courseNames = [];
+                        for (final documentSnapshot in snapshot.data!.docs) {
+                          final documentName = documentSnapshot.id;
+                          courseNames.add(documentName);
+                        }
+                        return DropdownButton<String>(
+                            value: SelectedCourse,
+                            dropdownColor: Colors.black,
+                            items: courseNames
+                                .map((courseName) => DropdownMenuItem(
+                                      value: courseName,
+                                      child: Text(
+                                        courseName,
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ))
+                                .toList(),
+                            onChanged: (courseName) async {
+                              setState(() {
+                                SelectedCourse = courseName;
+                                getCourseDetails();
+                              });
+                            });
+                      },
                     ),
                   ],
                 ),
@@ -206,6 +286,43 @@ class _createState extends State<create> {
                             ),
                           ),
                   ),
+                ),
+              ),
+            ],
+          ),
+          Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(14.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start, // Add this line
+                  children: [
+                    Text(
+                      'New Title:',
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    Container(
+                      height: 50,
+                      width: 200,
+                      child: TextField(
+                        decoration: InputDecoration(
+                          hintText: 'Enter title here',
+                          hintStyle: TextStyle(
+                            color: Colors.black,
+                          ),
+                          border: OutlineInputBorder(),
+                          filled: true,
+                          fillColor: Colors.white,
+                        ),
+                        controller: _newTitleController,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
@@ -293,7 +410,7 @@ class _createState extends State<create> {
                       uploadToFirebaseStore();
                     },
                     child: Text(
-                      'Add Course',
+                      'Update Course',
                       style: TextStyle(fontSize: 15),
                     ),
                   ),

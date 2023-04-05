@@ -52,7 +52,7 @@ class _createState extends State<create> {
   }
 
   uploadToFirebaseStore() async {
-    EasyLoading.show(status: 'Uploading ...');
+    EasyLoading.show(status: 'Creating ...');
     if ((_image != null) &&
         (!_textFieldController.text.isEmpty) &&
         (!_textAreaController.text.isEmpty) &&
@@ -70,7 +70,7 @@ class _createState extends State<create> {
         'author': _authorNameValue,
         'date': DateTime.now(),
       }).whenComplete(() {
-        EasyLoading.showSuccess('Great Success!');
+        EasyLoading.showSuccess('Data Created!');
         setState(() {
           _image = null;
           _textFieldController.clear();
@@ -86,7 +86,7 @@ class _createState extends State<create> {
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text("Warning"),
-            content: Text("You fill all data"),
+            content: Text("Fill required fields"),
             actions: [
               TextButton(
                 child: Text("OK"),

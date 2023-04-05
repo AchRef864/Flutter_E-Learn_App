@@ -18,30 +18,9 @@ class _deleteState extends State<delete> {
   String? SelectedBanner;
   String imageUrl = '';
   String download_Url = '';
-  dynamic _image;
-
-  pickImage() async {
-    FilePickerResult? result = await FilePicker.platform
-        .pickFiles(allowMultiple: false, type: FileType.image);
-
-    if (result != null) {
-      setState(() {
-        _image = result.files.first.bytes;
-        fileName = result.files.first.name;
-      });
-    }
-  }
-
-  _uploadToStorage(dynamic image) async {
-    Reference ref = _storage.ref().child('Banners').child(fileName!);
-    UploadTask uploadTask = ref.putData(image);
-    TaskSnapshot snapshot = await uploadTask;
-    String downloadUrl = await snapshot.ref.getDownloadURL();
-    return downloadUrl;
-  }
 
   uploadToFirebaseStore() async {
-    EasyLoading.show(status: 'Deleted ...');
+    EasyLoading.show(status: 'Deleting ...');
     if (SelectedBanner != null) {
       String? choix = SelectedBanner;
       SelectedBanner = null;
@@ -51,9 +30,7 @@ class _deleteState extends State<delete> {
           .delete()
           .whenComplete(() {
         EasyLoading.showSuccess('Data Deleted!');
-        setState(() {
-          _image = null;
-        });
+        setState(() {});
       });
     } else {
       EasyLoading.showError('Failed with Error');
@@ -62,7 +39,7 @@ class _deleteState extends State<delete> {
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text("Warning"),
-            content: Text("You fill all data"),
+            content: Text("Fill required fields"),
             actions: [
               TextButton(
                 child: Text("OK"),
