@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import '../../../model/users_model/admin/admin.dart';
-import '../../../model/users_model/user/user.dart';
+import 'update.dart';
+import 'delete.dart';
 
-class UsersScreen extends StatefulWidget {
+class user extends StatefulWidget {
   static const String routeName = '\UsersScreen';
 
   @override
-  State<UsersScreen> createState() => _UsersScreenState();
+  State<user> createState() => _userState();
 }
 
-class _UsersScreenState extends State<UsersScreen> {
-  String? _selectedValue = 'user';
+class _userState extends State<user> {
+  String? _selectedValue = 'update';
 
   @override
   Widget build(BuildContext context) {
@@ -19,20 +19,6 @@ class _UsersScreenState extends State<UsersScreen> {
         height: MediaQuery.of(context).size.height,
         child: Column(
           children: [
-            Container(
-              alignment: Alignment.topLeft,
-              padding: const EdgeInsets.all(10),
-              child: const Text(
-                'Account',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 36,
-                ),
-              ),
-            ),
-            Divider(
-              color: Colors.white,
-            ),
             Container(
               child: Align(
                 alignment: Alignment.topCenter,
@@ -43,12 +29,12 @@ class _UsersScreenState extends State<UsersScreen> {
                       width: 200,
                       child: RadioListTile<String>(
                         title: Text(
-                          'User',
+                          'Update',
                           style: TextStyle(
                             color: Colors.white,
                           ),
                         ),
-                        value: 'user',
+                        value: 'update',
                         groupValue: _selectedValue,
                         onChanged: (value) {
                           setState(() {
@@ -61,12 +47,12 @@ class _UsersScreenState extends State<UsersScreen> {
                       width: 200,
                       child: RadioListTile<String>(
                         title: Text(
-                          'Admin',
+                          'Delete',
                           style: TextStyle(
                             color: Colors.white,
                           ),
                         ),
-                        value: 'admin',
+                        value: 'delete',
                         groupValue: _selectedValue,
                         onChanged: (value) {
                           setState(() {
@@ -93,10 +79,10 @@ class _UsersScreenState extends State<UsersScreen> {
 
   Widget getText() {
     switch (_selectedValue) {
-      case 'user':
-        return user();
-      case 'admin':
-        return admin();
+      case 'update':
+        return update();
+      case 'delete':
+        return delete();
       default:
         return SizedBox.shrink();
     }

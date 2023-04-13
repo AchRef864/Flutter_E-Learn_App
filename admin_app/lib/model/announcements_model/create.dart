@@ -81,97 +81,95 @@ class _createState extends State<create> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(14.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start, // Add this line
-                  children: [
-                    Text(
-                      'Title:',
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
+    return Column(
+      children: [
+        Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(14.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start, // Add this line
+                children: [
+                  Text(
+                    'Title:',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
                     ),
-                    SizedBox(height: 10),
-                    Container(
-                      height: 50,
-                      width: 200,
-                      child: TextField(
-                        decoration: InputDecoration(
-                          hintText: 'Enter announcement here',
-                          hintStyle: TextStyle(
-                            color: Colors.black,
-                          ),
-                          border: OutlineInputBorder(),
-                          filled: true,
-                          fillColor: Colors.white,
-                        ),
-                        controller: _textFieldController,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(14.0),
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      primary: Colors.white70 // Background color
-                      ),
-                  onPressed: () {
-                    pickImage();
-                  },
-                  child: Container(
-                    height: 140,
+                  ),
+                  SizedBox(height: 10),
+                  Container(
+                    height: 50,
                     width: 200,
-                    decoration: BoxDecoration(
-                      color: Colors.white70,
+                    child: TextField(
+                      decoration: InputDecoration(
+                        hintText: 'Enter announcement here',
+                        hintStyle: TextStyle(
+                          color: Colors.black,
+                        ),
+                        border: OutlineInputBorder(),
+                        filled: true,
+                        fillColor: Colors.white,
+                      ),
+                      controller: _textFieldController,
                     ),
-                    child: _image != null
-                        ? Image.memory(
-                            _image,
-                            fit: BoxFit.cover,
-                          )
-                        : Center(
-                            child: Text(
-                              'Upload Image',
-                              style: TextStyle(color: Colors.black),
-                            ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(14.0),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    primary: Colors.white70 // Background color
+                    ),
+                onPressed: () {
+                  pickImage();
+                },
+                child: Container(
+                  height: 140,
+                  width: 200,
+                  decoration: BoxDecoration(
+                    color: Colors.white70,
+                  ),
+                  child: _image != null
+                      ? Image.memory(
+                          _image,
+                          fit: BoxFit.cover,
+                        )
+                      : Center(
+                          child: Text(
+                            'Upload Image',
+                            style: TextStyle(color: Colors.black),
                           ),
+                        ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(50.0),
+              child: SizedBox(
+                width: 150,
+                height: 50, // set desired width here
+                child: ElevatedButton(
+                  onPressed: () {
+                    uploadToFirebaseStore();
+                  },
+                  child: Text(
+                    'Add Banner',
+                    style: TextStyle(fontSize: 15),
                   ),
                 ),
               ),
-            ],
-          ),
-          Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(50.0),
-                child: SizedBox(
-                  width: 150,
-                  height: 50, // set desired width here
-                  child: ElevatedButton(
-                    onPressed: () {
-                      uploadToFirebaseStore();
-                    },
-                    child: Text(
-                      'Add Banner',
-                      style: TextStyle(fontSize: 15),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }

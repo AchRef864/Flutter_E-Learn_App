@@ -1,14 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:quizz/views/buyers/nav_screens/course_screen.dart';
 
-class Category_Text extends StatelessWidget {
+class Category_Text extends StatefulWidget {
+  @override
+  _Category_TextState createState() => _Category_TextState();
+}
+
+class _Category_TextState extends State<Category_Text> {
   final List<String> _categoryTable = [
-    'DeskTop developement',
-    'IOS developement',
+    'All courses',
+    'Desktop development',
+    'iOS development',
     'Web development',
-    'Android developement',
+    'Android development',
     'Game development'
   ];
+  String _selectedCategory = 'All courses';
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -36,47 +44,35 @@ class Category_Text extends StatelessWidget {
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: ActionChip(
-                            backgroundColor: Colors.black26,
-                            onPressed: () {},
-                            label: Center(
-                              child: Text(
-                                _categoryTable[index],
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 13,
-                                ),
+                          backgroundColor: Colors.black26,
+                          onPressed: () {
+                            setState(() {
+                              _selectedCategory = _categoryTable[index];
+                            });
+                          },
+                          label: Center(
+                            child: Text(
+                              _categoryTable[index],
+                              style: TextStyle(
+                                color:
+                                    _selectedCategory == _categoryTable[index]
+                                        ? Colors.white
+                                        : Colors.black,
+                                fontSize: 13,
                               ),
-                            )),
+                            ),
+                          ),
+                        ),
                       );
                     }),
                   ),
                 ),
-                IconButton(
-                  onPressed: () {},
-                  icon: Icon(Icons.arrow_forward_ios),
-                ),
               ],
             ),
           ),
-          Container(
-            alignment: Alignment.bottomRight,
-            child: TextButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => CourseScreen()),
-                );
-              },
-              child: Text(
-                'all Courses >>> ',
-                style: TextStyle(
-                  decoration: TextDecoration.underline,
-                  color: Colors.lightBlue,
-                ),
-              ),
-            ),
-          )
+          Text(
+            'Selected category: $_selectedCategory',
+          ),
         ],
       ),
     );

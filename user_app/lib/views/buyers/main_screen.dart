@@ -13,7 +13,7 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   int _pageIndex = 0;
-  List<Widget> _pages = [HomeScreen(), CourseScreen(), AccountScreen()];
+  List<Widget> _pages = [HomeScreen(), AccountScreen()];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,11 +38,11 @@ class _MainScreenState extends State<MainScreen> {
             ),
             label: 'HOME',
           ),
-          BottomNavigationBarItem(
+          /*BottomNavigationBarItem(
             backgroundColor: Color.fromARGB(255, 20, 20, 20),
             icon: Icon(CupertinoIcons.book),
             label: 'COURSES',
-          ),
+          ),*/
           BottomNavigationBarItem(
             backgroundColor: Color.fromARGB(255, 20, 20, 20),
             icon: Icon(CupertinoIcons.person),

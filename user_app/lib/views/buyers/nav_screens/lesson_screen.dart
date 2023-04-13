@@ -1,60 +1,67 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
-import 'package:quizz/views/buyers/nav_screens/lessons_screen.dart';
+import 'package:quizz/views/buyers/nav_screens/quizzes_screen.dart';
 
-class CoursePage extends StatefulWidget {
+class LessonPage extends StatefulWidget {
   final String courseId;
-
-  const CoursePage({Key? key, required this.courseId}) : super(key: key);
+  final String lessonId;
+  const LessonPage({Key? key, required this.courseId, required this.lessonId})
+      : super(key: key);
 
   @override
-  State<CoursePage> createState() => _CoursePageState();
+  State<LessonPage> createState() => _LessonPageState();
 }
 
-class _CoursePageState extends State<CoursePage> {
+class _LessonPageState extends State<LessonPage> {
   void _navigateToLesson() {
     Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) => LessonsPage(courseId: widget.courseId)),
+          builder: (context) => QuizzesPage(
+              courseId: widget.courseId, lessonId: widget.lessonId)),
     );
   }
 
-  final Stream<QuerySnapshot> _userStream =
-      FirebaseFirestore.instance.collection('courses').snapshots();
-
-  Future<String> getTitle(String courseId) async {
+  Future<String> getTitle(String courseId, String lessonId) async {
     final DocumentSnapshot snapshot = await FirebaseFirestore.instance
         .collection('courses')
         .doc(courseId)
+        .collection('lessons')
+        .doc(lessonId)
         .get();
     final Map<String, dynamic> data = snapshot.data()! as Map<String, dynamic>;
     return data['title'];
   }
 
-  Future<String> getInroduction(String courseId) async {
+  Future<String> getLesson(String courseId, String lessonId) async {
     final DocumentSnapshot snapshot = await FirebaseFirestore.instance
         .collection('courses')
         .doc(courseId)
+        .collection('lessons')
+        .doc(lessonId)
         .get();
     final Map<String, dynamic> data = snapshot.data()! as Map<String, dynamic>;
-    return data['introduction'];
+    return data['lesson'];
   }
 
-  Future<String> getAuthor(String courseId) async {
+  Future<String> getcodline(String courseId, String lessonId) async {
     final DocumentSnapshot snapshot = await FirebaseFirestore.instance
         .collection('courses')
         .doc(courseId)
+        .collection('lessons')
+        .doc(lessonId)
         .get();
     final Map<String, dynamic> data = snapshot.data()! as Map<String, dynamic>;
-    return data['author'];
+    return data['codeline'];
   }
 
-  Future<Timestamp> getDate(String courseId) async {
+  Future<Timestamp> getDate(String courseId, String lessonId) async {
     final DocumentSnapshot snapshot = await FirebaseFirestore.instance
         .collection('courses')
         .doc(courseId)
+        .collection('lessons')
+        .doc(lessonId)
         .get();
     final Map<String, dynamic> data = snapshot.data()! as Map<String, dynamic>;
     return data['date'];
@@ -62,11 +69,10 @@ class _CoursePageState extends State<CoursePage> {
 
   @override
   Widget build(BuildContext context) {
-    // Add your widget tree for the course page here
     return Scaffold(
       appBar: AppBar(
         title: FutureBuilder<String>(
-          future: getTitle(widget.courseId),
+          future: getTitle(widget.courseId, widget.lessonId),
           builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
             if (snapshot.hasData) {
               return Text(snapshot.data!);
@@ -89,12 +95,12 @@ class _CoursePageState extends State<CoursePage> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: FutureBuilder<String>(
-                      future: getTitle(widget.courseId),
+                      future: getTitle(widget.courseId, widget.lessonId),
                       builder: (BuildContext context,
                           AsyncSnapshot<String> snapshot) {
                         if (snapshot.hasData) {
                           return Text(
-                            'Weclome To ${snapshot.data!} !!!',
+                            '${snapshot.data!}',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Color.fromARGB(255, 124, 61, 61),
@@ -109,70 +115,79 @@ class _CoursePageState extends State<CoursePage> {
                       },
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsets.all(16.0),
-                    child: Column(
-                      children: [
-                        Align(
-                          alignment: Alignment.topLeft,
-                          child: Text(
-                            'Introduction: \n\n',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Color.fromARGB(255, 48, 58, 94),
-                              fontSize: 23,
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Color.fromARGB(255, 201, 201, 201),
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.all(16.0),
+                      child: Column(
+                        children: [
+                          Align(
+                            alignment: Alignment.topLeft,
+                            child: Text(
+                              'Lesson : \n\n',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 23,
+                              ),
                             ),
                           ),
-                        ),
-                        FutureBuilder<String>(
-                          future: getInroduction(widget.courseId),
-                          builder: (BuildContext context,
-                              AsyncSnapshot<String> snapshot) {
-                            if (snapshot.hasData) {
-                              return Text(
-                                snapshot.data!,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Color.fromARGB(255, 45, 62, 122),
-                                  fontSize: 20,
-                                ),
-                              );
-                            } else if (snapshot.hasError) {
-                              return Text('Error: ${snapshot.error}');
-                            } else {
-                              return Text('Loading...');
-                            }
-                          },
-                        ),
-                      ],
+                          FutureBuilder<String>(
+                            future: getLesson(widget.courseId, widget.lessonId),
+                            builder: (BuildContext context,
+                                AsyncSnapshot<String> snapshot) {
+                              if (snapshot.hasData) {
+                                return Text(
+                                  snapshot.data!,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20,
+                                  ),
+                                );
+                              } else if (snapshot.hasError) {
+                                return Text('Error: ${snapshot.error}');
+                              } else {
+                                return Text('Loading...');
+                              }
+                            },
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: FutureBuilder<String>(
-                      future: getAuthor(widget.courseId),
-                      builder: (BuildContext context,
-                          AsyncSnapshot<String> snapshot) {
-                        if (snapshot.hasData) {
-                          return Text(
-                            snapshot.data!,
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15,
-                            ),
-                          );
-                        } else if (snapshot.hasError) {
-                          return Text('Error: ${snapshot.error}');
-                        } else {
-                          return Text('Loading...');
-                        }
-                      },
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.black,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: FutureBuilder<String>(
+                        future: getcodline(widget.courseId, widget.lessonId),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<String> snapshot) {
+                          if (snapshot.hasData) {
+                            return Text(
+                              snapshot.data!,
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 25,
+                                color: Colors.white, // set text color to white
+                              ),
+                            );
+                          } else if (snapshot.hasError) {
+                            return Text('Error: ${snapshot.error}');
+                          } else {
+                            return Text('Loading...');
+                          }
+                        },
+                      ),
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: FutureBuilder<Timestamp>(
-                      future: getDate(widget.courseId),
+                      future: getDate(widget.courseId, widget.lessonId),
                       builder: (BuildContext context,
                           AsyncSnapshot<Timestamp> snapshot) {
                         if (snapshot.hasData) {
@@ -202,10 +217,10 @@ class _CoursePageState extends State<CoursePage> {
                         onPressed: () {
                           _navigateToLesson();
                         },
-                        child: Text('Start'),
+                        child: Text('QUICK TEST!!!'),
                         style: ElevatedButton.styleFrom(
                           primary: Color.fromARGB(
-                              255, 137, 211, 73), // Light green color
+                              255, 211, 73, 73), // Light green color
                           textStyle: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,

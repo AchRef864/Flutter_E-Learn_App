@@ -74,20 +74,6 @@ class _createState extends State<create> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          Container(
-            alignment: Alignment.topLeft,
-            padding: const EdgeInsets.all(10),
-            child: const Text(
-              'Lessons',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 36,
-              ),
-            ),
-          ),
-          Divider(
-            color: Colors.white,
-          ),
           Row(
             children: [
               Padding(

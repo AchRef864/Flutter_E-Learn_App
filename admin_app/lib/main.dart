@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:admin_app/auth/login_screen.dart';
 import 'package:admin_app/views/screens/main_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
@@ -35,7 +36,7 @@ class MyApp extends StatelessWidget {
       ),
       debugShowCheckedModeBanner: false,
       title: "flutter demo",
-      home: MainScreen(),
+      home: LoginPage(),
       builder: EasyLoading.init(),
     );
   }

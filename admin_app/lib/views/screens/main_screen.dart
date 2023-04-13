@@ -1,6 +1,5 @@
 import 'package:admin_app/views/screens/side_bar_screen/announcements_screen.dart';
 import 'package:admin_app/views/screens/side_bar_screen/courses_screen.dart';
-import 'package:admin_app/views/screens/side_bar_screen/dashboard_screen.dart';
 import 'package:admin_app/views/screens/side_bar_screen/quizzes_screen.dart';
 import 'package:admin_app/views/screens/side_bar_screen/setting_screen.dart';
 import 'package:admin_app/views/screens/side_bar_screen/Lesson_screen.dart';
@@ -19,12 +18,6 @@ class _MainScreenState extends State<MainScreen> {
   Widget _selectedItem = CoursesScreen();
   screenSelector(item) {
     switch (item.route) {
-      case DashboardScreen.routeName:
-        setState(() {
-          _selectedItem = DashboardScreen();
-        });
-        break;
-
       case AnnouncementsScreen.routeName:
         setState(() {
           _selectedItem = AnnouncementsScreen();
@@ -71,11 +64,6 @@ class _MainScreenState extends State<MainScreen> {
       ),
       sideBar: SideBar(
         items: [
-          AdminMenuItem(
-            title: 'Dashboard',
-            icon: Icons.dashboard,
-            route: DashboardScreen.routeName,
-          ),
           AdminMenuItem(
             title: 'Users',
             icon: Icons.verified_user,

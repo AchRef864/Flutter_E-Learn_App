@@ -8,24 +8,42 @@ class Welcome_Text extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(
-          top: MediaQuery.of(context).padding.top, left: 25, right: 25),
+      padding: EdgeInsets.all(10.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            "A person who never\nmade a mistake\nnever tried anything new.\n",
-            style: TextStyle(
-              fontSize: 18,
-              color: Colors.white70,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          Container(
-            child: Icon(
-              Icons.shopping_cart_outlined,
-              size: 36,
-              color: Colors.redAccent,
+          RichText(
+            text: const TextSpan(
+              style: TextStyle(
+                color: Color.fromARGB(193, 255, 255, 255),
+                fontSize: 50,
+                fontWeight: FontWeight.bold,
+                fontFamily: "Courier",
+              ),
+              text: "Work",
+              children: [
+                TextSpan(
+                  style: TextStyle(
+                    color: Color(0xffB40026),
+                  ),
+                  text: " Hard",
+                ),
+                TextSpan(
+                  text: ",",
+                ),
+                TextSpan(
+                  text: "\nDream",
+                ),
+                TextSpan(
+                  style: TextStyle(
+                    color: Color(0xffB40026),
+                  ),
+                  text: " Big",
+                ),
+                TextSpan(
+                  text: ".",
+                ),
+              ],
             ),
           ),
         ],

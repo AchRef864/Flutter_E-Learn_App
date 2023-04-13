@@ -94,20 +94,6 @@ class _updateState extends State<update> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          Container(
-            alignment: Alignment.topLeft,
-            padding: const EdgeInsets.all(10),
-            child: const Text(
-              'Lessons',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 36,
-              ),
-            ),
-          ),
-          Divider(
-            color: Colors.white,
-          ),
           Row(
             children: [
               Padding(
@@ -335,7 +321,7 @@ class _updateState extends State<update> {
                       uploadToFirebaseStore();
                     },
                     child: Text(
-                      'Add Lesson',
+                      'Update Lesson',
                       style: TextStyle(fontSize: 15),
                     ),
                   ),

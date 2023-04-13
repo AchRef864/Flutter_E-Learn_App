@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
@@ -11,20 +10,19 @@ class delete extends StatefulWidget {
 }
 
 class _deleteState extends State<delete> {
-  final FirebaseStorage _storage = FirebaseStorage.instance;
   String? fileName;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  String? SelectedBanner;
-  String imageUrl = '';
-  String download_Url = '';
+  String? SelectedAdmin;
 
   uploadToFirebaseStore() async {
     EasyLoading.show(status: 'Deleting ...');
-    if (SelectedBanner != null) {
-      String? choix = SelectedBanner;
-      SelectedBanner = null;
+    if (SelectedAdmin != null) {
+      String? choix = SelectedAdmin;
+      SelectedAdmin = null;
       await _firestore
-          .collection("banners")
+          .collection("accounts")
+          .doc("account")
+          .collection("admins")
           .doc(choix)
           .delete()
           .whenComplete(() {
@@ -68,7 +66,7 @@ class _deleteState extends State<delete> {
                         CrossAxisAlignment.start, // Add this line
                     children: [
                       Text(
-                        'Banner to be deleted:',
+                        'Admin to be deleted:',
                         style: TextStyle(
                           fontSize: 18,
                           color: Colors.white,
@@ -78,7 +76,9 @@ class _deleteState extends State<delete> {
                       SizedBox(height: 10),
                       StreamBuilder<QuerySnapshot>(
                         stream: FirebaseFirestore.instance
-                            .collection('banners')
+                            .collection("accounts")
+                            .doc("account")
+                            .collection("admins")
                             .snapshots(),
                         builder: (BuildContext context,
                             AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -88,27 +88,27 @@ class _deleteState extends State<delete> {
                               onChanged: null,
                             );
                           }
-                          List<String> bannersNames = [];
+                          List<String> adminsNames = [];
                           for (final documentSnapshot in snapshot.data!.docs) {
                             final documentName = documentSnapshot.id;
-                            bannersNames.add(documentName);
+                            adminsNames.add(documentName);
                           }
                           return DropdownButton<String>(
-                              value: SelectedBanner,
+                              value: SelectedAdmin,
                               dropdownColor: Colors.black,
-                              items: bannersNames
-                                  .map((bannerName) => DropdownMenuItem(
-                                        value: bannerName,
+                              items: adminsNames
+                                  .map((adminName) => DropdownMenuItem(
+                                        value: adminName,
                                         child: Text(
-                                          bannerName,
+                                          adminName,
                                           style: TextStyle(
                                             color: Colors.white,
                                           ),
                                         ),
                                       ))
                                   .toList(),
-                              onChanged: (bannerName) async {
-                                setState(() => SelectedBanner = bannerName);
+                              onChanged: (adminName) async {
+                                setState(() => SelectedAdmin = adminName);
                               });
                         },
                       ),
@@ -125,7 +125,7 @@ class _deleteState extends State<delete> {
                         uploadToFirebaseStore();
                       },
                       child: Text(
-                        'Delete Banner',
+                        'Delete Admin',
                         style: TextStyle(fontSize: 15),
                       ),
                     ),
